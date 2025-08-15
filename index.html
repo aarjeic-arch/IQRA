@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%232dd4bf'><path stroke-linecap='round' stroke-linejoin='round' d='M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25' /></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO and Meta Tags (Content injected by LocalizationContext) -->
+    <title id="meta-title"></title>
+    <meta id="meta-description" name="description" content="" />
+    <meta name="keywords" content="Iqra, إقرأ, برمجة, لغة برمجة عربية, تطوير, تعليم البرمجة, Arabic programming language, learn to code" />
+    <meta id="og-title" property="og:title" content="" />
+    <meta id="og-description" property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://iqra-lang.dev" /> 
+    <!-- <meta property="og:image" content="https://iqra-lang.dev/og-image.png" /> -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Tajawal', 'Inter', sans-serif;
+      }
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom background grid pattern for hero */
+      .bg-grid-pattern {
+        background-image:
+          linear-gradient(to right, rgb(20 30 54 / 0.5) 1px, transparent 1px),
+          linear-gradient(to bottom, rgb(20 30 54 / 0.5) 1px, transparent 1px);
+        background-size: 2rem 2rem;
+      }
+
+      /* Scroll-in animation */
+      section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      section.fade-in-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Enhanced Syntax Highlighting Styles */
+      .token-comment { color: #637795; }
+      .token-keyword { color: #f92672; }
+      .token-string { color: #a6e22e; }
+      .token-number { color: #ae81ff; }
+      .token-function { color: #66d9ef; }
+      .token-variable { color: #fd971f; }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
