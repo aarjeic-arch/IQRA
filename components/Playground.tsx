@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalization } from '../context/LocalizationContext';
-import { executeIqraCode } from '../core/interpreter';
-import { PlayIcon, SpinnerIcon, XCircleIcon, TrashIcon } from './Icons';
+import { useIqraRunner } from '../hooks/useIqraRunner';
+import { PlayIcon, SpinnerIcon, XCircleIcon, TrashIcon, ClipboardCopyIcon, CheckIcon, ArrowPathIcon } from './Icons';
 
 const initialCode = `// استكشف هياكل البيانات الجديدة في إقرأ!
 
@@ -58,13 +58,24 @@ const Playground: React.FC = () => {
   const { t } = useLocalization();
   const [code, setCode] = useState(initialCode.trim());
   const [highlightedCode, setHighlightedCode] = useState('');
-  const [output, setOutput] = useState<string[]>([]);
-  const [error, setError] = useState<{ message: string; line: number | null } | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  
+  const { output, error, isLoading, runCode, clearOutput } = useIqraRunner();
+
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const preRef = useRef<HTMLElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
 
+  // Auto-resize editor height
+  useEffect(() => {
+    const textarea = editorRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [code]);
+
+  // Update syntax highlighting
   useEffect(() => {
     setHighlightedCode(highlightCode(code));
   }, [code]);
@@ -85,28 +96,17 @@ const Playground: React.FC = () => {
     }
   }, []);
 
-  const handleExecute = async () => {
-    setIsLoading(true);
-    setOutput([]);
-    setError(null);
-    const result = await executeIqraCode(code);
-    
-    if (result.outputLines.length > 0) {
-      setOutput(result.outputLines);
-    } else if (!result.error) {
-      setOutput([t('playground_no_output')]);
-    }
+  const handleExecute = () => runCode(code);
 
-    if (result.error) {
-      setError({ message: result.error, line: result.errorLine });
-    }
-    setIsLoading(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
-
-  const handleClear = () => {
-    setOutput([]);
-    setError(null);
-  }
+  
+  const handleReset = () => {
+    setCode(initialCode.trim());
+  };
 
   const lineCount = code.split('\n').length;
 
@@ -118,7 +118,29 @@ const Playground: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
         {/* Editor Panel */}
         <div className="flex flex-col">
-          <div className="flex-grow bg-[#1e293b] rounded-t-xl shadow-2xl shadow-teal-500/10 border border-b-0 border-slate-700 overflow-hidden flex dir-ltr live-editor-container">
+          {/* Editor Header */}
+          <div className="flex justify-between items-center gap-4 bg-slate-800 p-2 rounded-t-xl border border-b-0 border-slate-700">
+            <div className="flex items-center gap-2">
+               <button onClick={handleReset} title={t('playground_reset_button')} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors p-2 rounded-md hover:bg-slate-700">
+                 <ArrowPathIcon className="h-5 w-5" />
+               </button>
+                <div className="relative">
+                   <button onClick={handleCopy} title={t('playground_copy_button')} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors p-2 rounded-md hover:bg-slate-700">
+                     <ClipboardCopyIcon className="h-5 w-5" />
+                   </button>
+                    <div role="status" aria-live="polite" className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md transition-all duration-300 ${isCopied ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`} style={{ pointerEvents: 'none' }}>
+                      <CheckIcon className="h-4 w-4" />
+                      {t('playground_copied_button')}
+                    </div>
+                </div>
+            </div>
+            <button onClick={handleExecute} disabled={isLoading} className="flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-700/50 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+              {isLoading ? <SpinnerIcon className="h-5 w-5 animate-spin" /> : <PlayIcon className="h-5 w-5" />}
+              <span>{t('playground_execute_button')}</span>
+            </button>
+          </div>
+          
+          <div className="flex-grow bg-[#1e293b] rounded-b-xl shadow-2xl shadow-teal-500/10 border border-t-0 border-slate-700 overflow-hidden flex dir-ltr live-editor-container">
              <div ref={lineNumbersRef} className="bg-slate-900 text-slate-500 text-right p-4 font-mono text-sm select-none overflow-y-hidden">
               {Array.from({ length: lineCount }, (_, i) => (
                 <div key={i}>{i + 1}</div>
@@ -140,25 +162,13 @@ const Playground: React.FC = () => {
               />
             </div>
           </div>
-          <button
-            onClick={handleExecute}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-700/50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-b-xl transition-colors duration-300"
-          >
-            {isLoading ? (
-              <SpinnerIcon className="h-5 w-5 animate-spin" />
-            ) : (
-              <PlayIcon className="h-5 w-5" />
-            )}
-            <span>{t('playground_execute_button')}</span>
-          </button>
         </div>
 
         {/* Output Panel */}
         <div className="flex flex-col">
           <div className="bg-slate-800 px-4 py-3 rounded-t-xl border-b border-slate-600 flex justify-between items-center">
             <h3 className="font-bold text-white">{t('playground_output_header')}</h3>
-            <button onClick={handleClear} className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+            <button onClick={clearOutput} className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors">
               <TrashIcon className="h-4 w-4" />
               {t('playground_clear_button')}
             </button>

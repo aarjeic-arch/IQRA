@@ -124,6 +124,18 @@ export const translations = {
     ar: 'مسح',
     en: 'Clear',
   },
+  playground_copy_button: {
+    ar: 'نسخ',
+    en: 'Copy',
+  },
+  playground_copied_button: {
+    ar: 'تم النسخ!',
+    en: 'Copied!',
+  },
+  playground_reset_button: {
+    ar: 'إعادة تعيين',
+    en: 'Reset',
+  },
   playground_output_header: {
     ar: 'المخرجات',
     en: 'Output',

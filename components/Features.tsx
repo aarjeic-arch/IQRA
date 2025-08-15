@@ -27,7 +27,7 @@ const Features: React.FC = () => {
           const Icon = iconMap[titleKey];
 
           return (
-            <div key={featureKey} className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 transform hover:-translate-y-2 transition-transform duration-300 shadow-lg hover:shadow-teal-500/20">
+            <div key={featureKey} className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 transform hover:-translate-y-2 transition-transform duration-300 shadow-lg glow-on-hover">
               <div className="flex items-center justify-center h-16 w-16 rounded-full bg-slate-800 mb-6 border border-slate-700">
                 {Icon && <Icon className="h-8 w-8 text-teal-400" />}
               </div>

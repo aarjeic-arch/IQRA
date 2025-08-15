@@ -9,11 +9,8 @@ import Community from './components/Community';
 import Footer from './components/Footer';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 
-const AnimatedSection: React.FC<{children: React.ReactNode, id: string}> = ({ children, id }) => {
-  const { ref, controls } = useScrollAnimation();
-  // This is a simplified stand-in for an animation library like Framer Motion.
-  // In a real app, you'd use the `controls` to trigger animations.
-  // For this example, we'll just use a CSS class approach based on visibility.
+const ScrollFadeInSection: React.FC<{children: React.ReactNode, id: string}> = ({ children, id }) => {
+  const { ref } = useScrollAnimation();
   return (
     <section ref={ref} id={id} className="py-16 md:py-24 px-6 container mx-auto">
       {children}
@@ -29,18 +26,18 @@ const App: React.FC = () => {
         <Header />
         <main>
           <Hero />
-          <AnimatedSection id="features">
+          <ScrollFadeInSection id="features">
             <Features />
-          </AnimatedSection>
-          <AnimatedSection id="playground">
+          </ScrollFadeInSection>
+          <ScrollFadeInSection id="playground">
             <Playground />
-          </AnimatedSection>
-          <AnimatedSection id="testimonials">
+          </ScrollFadeInSection>
+          <ScrollFadeInSection id="testimonials">
             <Testimonials />
-          </AnimatedSection>
-          <AnimatedSection id="community">
+          </ScrollFadeInSection>
+          <ScrollFadeInSection id="community">
             <Community />
-          </AnimatedSection>
+          </ScrollFadeInSection>
         </main>
         <Footer />
       </div>

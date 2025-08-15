@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../context/LocalizationContext';
-import { IqraLogo, MenuIcon, XIcon } from './Icons';
+import { IqraLogo, MenuIcon, XIcon, GlobeAltIcon } from './Icons';
 import { TranslationKey } from '../constants/translations';
 
 const Header: React.FC = () => {
@@ -58,8 +58,9 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <button onClick={toggleLanguage} className="hidden md:block text-slate-300 hover:text-teal-400 font-semibold transition-colors duration-300">
-              {language === 'ar' ? 'EN' : 'AR'}
+            <button onClick={toggleLanguage} className="hidden md:flex items-center gap-2 text-slate-300 hover:text-teal-400 font-semibold transition-colors duration-300">
+               <GlobeAltIcon className="h-6 w-6" />
+              <span>{language === 'ar' ? 'EN' : 'AR'}</span>
             </button>
             <a href="#community" className="hidden md:block bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-5 rounded-full transition-colors duration-300">
               {t('nav_get_started')}
