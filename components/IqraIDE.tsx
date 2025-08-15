@@ -44,7 +44,7 @@ const initialCode = `/*
   اطبع(درجات_ممتازة);
   
   ثابت مجموع_الدرجات = مستخدم.الدرجات.تجميع((مجموع, حالي) => مجموع + حالي, 0);
-  اطبع("المعدل: " + (مجموع_الدرجات / طول(مستخدم.الدرجات)));
+  اطبع("المعدل: " + (مجموع_الدرجات / مستخدم.الدرجات.length));
 
   اطبع("\\n--- استخدام مكتبة الرياضيات ---");
   اطبع("أكبر درجة هي: " + رياضيات.اكبر(...مستخدم.الدرجات));
@@ -60,8 +60,8 @@ const highlightCode = (code: string): string => {
     .replace(/\b(ثابت|متغير|دالة|ارجع|اذا|والا|والا اذا|طالما|كرر|مرات|دالة_غير_متزامنة|انتظر|حاول|امسك)\b/g, '<span class="token-keyword">$1</span>')
     .replace(/\b(صحيح|خطأ|عدم)\b/g, '<span class="token-boolean">$1</span>')
     .replace(/\b(اطبع|تأخير)\b/g, '<span class="token-function">$1</span>')
-    .replace(/\b(رياضيات|جسون|تاريخ)\b/g, '<span class="token-class-name">$1</span>')
-    .replace(/(\.خريطة|\.تصفية|\.تجميع)\b/g, '<span class="token-function">$1</span>')
+    .replace(/\b(رياضيات|جسون|تاريخ|طول)\b/g, '<span class="token-class-name">$1</span>')
+    .replace(/(\.خريطة|\.تصفية|\.تجميع|\.length)\b/g, '<span class="token-function">$1</span>')
     .replace(/(".*?")/g, '<span class="token-string">$1</span>')
     .replace(/\b(\d+(\.\d+)?)\b/g, '<span class="token-number">$1</span>')
     .replace(/([+\-*/=<>!]+|و|أو)/g, '<span class="token-operator">$1</span>')
@@ -191,7 +191,7 @@ const IqraIDE: React.FC = () => {
           <div className="mt-4 p-3 bg-red-900/50 border-l-4 border-red-500 rounded">
             <div className="flex items-center gap-2 font-bold text-red-400 mb-2">
               <XCircleIcon className="h-5 w-5" />
-              <span>{error.line ? t('ide_title', {lineNumber: error.line.toString()}) : 'خطأ'}</span>
+              <span>{error.line ? t('ide_error_at_line', {lineNumber: error.line.toString()}) : t('status_error')}</span>
             </div>
             <p className="text-red-300">{error.message}</p>
           </div>

@@ -10,9 +10,7 @@ const Header: React.FC = () => {
 
   const navLinks: { href: string, key: TranslationKey }[] = [
     { href: '#features', key: 'nav_features' },
-    { href: '#playground', key: 'nav_playground' },
-    { href: '#testimonials', key: 'nav_testimonials' },
-    { href: '#community', key: 'nav_community' },
+    { href: '#ide', key: 'nav_ide' },
   ];
 
   const toggleLanguage = () => {
@@ -62,7 +60,7 @@ const Header: React.FC = () => {
                <GlobeAltIcon className="h-6 w-6" />
               <span>{language === 'ar' ? 'EN' : 'AR'}</span>
             </button>
-            <a href="#community" className="hidden md:block bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-5 rounded-full transition-colors duration-300">
+            <a href="#ide" className="hidden md:block bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-5 rounded-full transition-colors duration-300">
               {t('nav_get_started')}
             </a>
             <button className="md:hidden text-slate-300" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
@@ -78,7 +76,7 @@ const Header: React.FC = () => {
           {navLinks.map(link => (
             <a key={link.key} href={link.href} onClick={() => setIsOpen(false)} className="text-xl text-slate-200 hover:text-teal-400 transition-colors duration-300">{t(link.key)}</a>
           ))}
-          <a href="#community" onClick={() => setIsOpen(false)} className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 mt-4">
+          <a href="#ide" onClick={() => setIsOpen(false)} className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 mt-4">
             {t('nav_get_started')}
           </a>
            <button onClick={() => { toggleLanguage(); setIsOpen(false); }} className="text-slate-300 hover:text-teal-400 font-semibold transition-colors duration-300 mt-4 text-lg">

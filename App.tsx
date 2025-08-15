@@ -3,9 +3,7 @@ import { LocalizationProvider } from './context/LocalizationContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
-import Playground from './components/Playground';
-import Testimonials from './components/Testimonials';
-import Community from './components/Community';
+import IqraIDE from './components/IqraIDE';
 import Footer from './components/Footer';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 
@@ -29,14 +27,8 @@ const App: React.FC = () => {
           <ScrollFadeInSection id="features">
             <Features />
           </ScrollFadeInSection>
-          <ScrollFadeInSection id="playground">
-            <Playground />
-          </ScrollFadeInSection>
-          <ScrollFadeInSection id="testimonials">
-            <Testimonials />
-          </ScrollFadeInSection>
-          <ScrollFadeInSection id="community">
-            <Community />
+          <ScrollFadeInSection id="ide">
+            <IqraIDE />
           </ScrollFadeInSection>
         </main>
         <Footer />

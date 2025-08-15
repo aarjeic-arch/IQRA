@@ -8,9 +8,7 @@ const Footer: React.FC = () => {
   
   const navLinks: { href: string, key: TranslationKey }[] = [
     { href: '#features', key: 'nav_features' },
-    { href: '#playground', key: 'nav_playground' },
-    { href: '#testimonials', key: 'nav_testimonials' },
-    { href: '#community', key: 'nav_community' },
+    { href: '#ide', key: 'nav_ide' },
   ];
 
   return (

@@ -1,4 +1,4 @@
-// A simple Iqra-to-JS transpiler and runner.
+// A professional Iqra-to-JS transpiler and runner.
 
 const createEnvironment = () => {
   const env = {
@@ -14,40 +14,12 @@ const createEnvironment = () => {
       }).join(' ');
       env.output.push(line);
     },
-    // Math
-    'جذر': Math.sqrt,
-    'تقريب': Math.round,
-    'رقم_عشوائي': Math.random,
-    // String/Array
-    'طول': (val: string | any[]) => {
-      if(val === undefined || val === null) return 0;
-      return val.length;
-    },
-    'قص': (str: string, start: number, end?: number) => str.slice(start, end),
-    'استبدل': (str: string, search: string, replacement: string) => str.replace(search, replacement),
-    'الى_حروف_كبيرة': (str: string) => str.toUpperCase(),
-    'الى_حروف_صغيرة': (str: string) => str.toLowerCase(),
-    // Array
-    'دفع': (arr: any[], ...elements: any[]) => arr.push(...elements),
-    'فرقعة': (arr: any[]) => arr.pop(),
-    'ربط': (arr: any[], separator = ',') => arr.join(separator),
-    // Type checking
-    'نوع': (val: any) => {
-        const type = typeof val;
-        const typeMap: {[key:string]: string} = {
-            'string': 'نص',
-            'number': 'رقم',
-            'boolean': 'منطقي',
-            'object': 'كائن',
-            'undefined': 'غير معرف',
-            'function': 'دالة'
-        }
-        if (val === null) return 'عدم';
-        if (Array.isArray(val)) return 'مصفوفة';
-        return typeMap[type] || type;
-    },
-    'هل_هو_رقم': (val: any) => typeof val === 'number' && !isNaN(val),
-    'هل_هو_نص': (val: any) => typeof val === 'string',
+    'تأخير': (ms: number) => new Promise(resolve => setTimeout(resolve, ms)),
+
+    // Standard Libraries
+    'رياضيات': Math,
+    'جسون': JSON,
+    'تاريخ': Date,
   };
   return env;
 };
@@ -59,15 +31,20 @@ const iqraToJs = (code: string): string => {
   const stringLiterals: string[] = [];
   const placeholder = "__IQRA_STRING_LITERAL__";
 
-  // 1. Protect string literals
-  let protectedCode = code.replace(/"(?:\\.|[^"\\])*"/g, (match) => {
-    stringLiterals.push(match);
-    return `"${placeholder}${stringLiterals.length - 1}"`;
-  });
+  // 1. Protect string literals and comments
+  let protectedCode = code
+    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
+    .replace(/\/\/.*/g, '') // Remove single-line comments
+    .replace(/"(?:\\.|[^"\\])*"/g, (match) => {
+      stringLiterals.push(match);
+      return `"${placeholder}${stringLiterals.length - 1}"`;
+    });
 
   const replacements: { [key: string]: string } = {
     'ثابت': 'const', 'متغير': 'let', 'اذا': 'if', 'والا اذا': 'else if',
-    'والا': 'else', 'طالما': 'while', 'دالة': 'function', 'ارجع': 'return',
+    'والا': 'else', 'طالما': 'while', 'دالة': 'function', 
+    'دالة_غير_متزامنة': 'async function', 'ارجع': 'return',
+    'انتظر': 'await', 'حاول': 'try', 'امسك': 'catch',
     'صحيح': 'true', 'خطأ': 'false', 'عدم': 'null', 'و': '&&', 'أو': '||',
   };
   
@@ -77,10 +54,16 @@ const iqraToJs = (code: string): string => {
   jsCode = jsCode.replace(/\{[^{}]+\}/g, (objectLiteral) => {
     return objectLiteral.replace(/([\u0600-\u06FF\w_]+)\s*:/g, '"$1":');
   });
-
-  // 3. Transpile dot notation for Arabic properties to bracket notation
-  jsCode = jsCode.replace(/\.([\u0600-\u06FF\w_]+)/g, '["$1"]');
-
+  
+  // 3. Transpile functional array methods and Arabic properties
+  jsCode = jsCode.replace(/\.([\u0600-\u06FF\w_]+)/g, (match, p1) => {
+      const methodMap: { [key: string]: string } = {
+          'خريطة': '.map',
+          'تصفية': '.filter',
+          'تجميع': '.reduce'
+      };
+      return methodMap[p1] || `["${p1}"]`;
+  });
 
   // 4. Apply simple keyword replacements
   for (const [iqra, js] of Object.entries(replacements)) {
@@ -99,15 +82,11 @@ const iqraToJs = (code: string): string => {
   return jsCode;
 };
 
-// A helper to parse line numbers from error stacks
 const parseErrorStack = (e: any): number | null => {
   if (!e.stack) return null;
-  // Try to find a line number in the stack trace
   const match = e.stack.match(/<anonymous>:(\d+):(\d+)/);
   if (match && match[1]) {
-    // The line number inside the sandboxed function.
-    // We subtract 1 to account for the "use strict"; line.
-    const lineNumber = parseInt(match[1], 10) - 1;
+    const lineNumber = parseInt(match[1], 10) - 2; // account for "use strict" and async wrapper
     return lineNumber > 0 ? lineNumber : null;
   }
   return null;
@@ -117,6 +96,7 @@ interface ExecutionResult {
   outputLines: string[];
   error: string | null;
   errorLine: number | null;
+  executionTime: number;
 }
 
 export const executeIqraCode = async (code: string): Promise<ExecutionResult> => {
@@ -124,10 +104,11 @@ export const executeIqraCode = async (code: string): Promise<ExecutionResult> =>
   let error: string | null = null;
   let errorLine: number | null = null;
   
+  const startTime = performance.now();
+
   try {
     const jsCode = iqraToJs(code);
     
-    // Using new Function in this controlled way is safer than direct eval().
     const sandboxedExecutor = new Function('env', `
       with (env) {
         return (async () => {
@@ -143,7 +124,7 @@ export const executeIqraCode = async (code: string): Promise<ExecutionResult> =>
     errorLine = parseErrorStack(e);
     let errorMessage = `خطأ في التنفيذ: ${e.message}`;
     if (e instanceof ReferenceError) {
-      errorMessage = `خطأ مرجعي: المتغير أو الدالة '${e.message.split(' ')[0]}' غير معرفة. هل نسيت تعريفها باستخدام 'متغير' أو 'ثابت' أو قمت بخطأ إملائي؟`;
+      errorMessage = `خطأ مرجعي: المتغير أو الدالة '${e.message.split(' ')[0]}' غير معرفة.`;
     } else if (e instanceof SyntaxError) {
       errorMessage = `خطأ في بناء الجملة: تأكد من كتابة الكود بشكل صحيح. (${e.message})`;
     } else if (e instanceof TypeError) {
@@ -151,6 +132,9 @@ export const executeIqraCode = async (code: string): Promise<ExecutionResult> =>
     }
     error = errorMessage;
   }
+  
+  const endTime = performance.now();
+  const executionTime = Math.round(endTime - startTime);
 
-  return { outputLines: environment.output, error, errorLine };
+  return { outputLines: environment.output, error, errorLine, executionTime };
 };

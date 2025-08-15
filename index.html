@@ -28,12 +28,19 @@
         scroll-behavior: smooth;
       }
 
-      /* Custom background grid pattern for hero */
-      .bg-grid-pattern {
-        background-image:
-          linear-gradient(to right, rgb(20 30 54 / 0.5) 1px, transparent 1px),
-          linear-gradient(to bottom, rgb(20 30 54 / 0.5) 1px, transparent 1px);
-        background-size: 2rem 2rem;
+      /* Animated background pattern for hero */
+      .bg-animated-pattern {
+          background-color: #0A101F;
+          background-image:
+              radial-gradient(ellipse at 50% 0, rgba(45, 212, 191, 0.15) 0%, rgba(45, 212, 191, 0) 70%),
+              linear-gradient(to right, rgb(20 30 54 / 0.5) 1px, transparent 1px),
+              linear-gradient(to bottom, rgb(20 30 54 / 0.5) 1px, transparent 1px);
+          background-size: 100% 100%, 2rem 2rem;
+          animation: pan-background 60s linear infinite;
+      }
+      @keyframes pan-background {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 200% 200%; }
       }
 
       /* Scroll-in animation */
@@ -63,17 +70,19 @@
       .token-boolean { color: #ae81ff; }
       .token-operator { color: #f92672; }
       .token-punctuation { color: #f8f8f2; }
+      .token-builtin { color: #e6db74; }
+      .token-class-name { color: #a6e22e; }
 
-      /* Live Editor Styles */
-      .live-editor-container:focus-within {
+
+      /* IDE Styles */
+      .ide-editor-container:focus-within {
         box-shadow: 0 0 0 2px #2dd4bf; /* teal-400 */
         transition: box-shadow 0.2s ease-in-out;
       }
-      .live-editor-wrapper {
+      .ide-editor-wrapper {
         position: relative;
-        min-height: 350px;
       }
-      .live-editor-pre, .live-editor-textarea {
+      .ide-editor-pre, .ide-editor-textarea {
         margin: 0;
         padding: 1rem;
         font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
@@ -81,11 +90,10 @@
         line-height: 1.5;
         white-space: pre-wrap;
         word-wrap: break-word;
-        min-height: 350px;
         height: 100%;
         overflow-y: auto;
       }
-      .live-editor-textarea {
+      .ide-editor-textarea {
         position: absolute;
         top: 0;
         left: 0;
@@ -97,7 +105,25 @@
         resize: none;
         outline: none;
         -webkit-text-fill-color: transparent;
-        overflow-y: hidden; /* Important for auto-resize */
+        overflow-y: auto; /* Hide default scrollbar but allow scrolling */
+      }
+      
+      /* Resizable handle style */
+      .resize-handle {
+        cursor: col-resize;
+        width: 12px;
+        background-color: #1e293b; /* slate-800 */
+        position: relative;
+      }
+      .resize-handle:hover::after, .resize-handle.resizing::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background-color: #2dd4bf; /* teal-400 */
       }
 
       /* Custom Scrollbar Styles */
