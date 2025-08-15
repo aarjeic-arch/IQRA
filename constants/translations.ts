@@ -26,9 +26,9 @@ export const translations = {
     ar: 'الميزات',
     en: 'Features',
   },
-  nav_examples: {
-    ar: 'أمثلة',
-    en: 'Examples',
+  nav_playground: {
+    ar: 'الملعب',
+    en: 'Playground',
   },
   nav_testimonials: {
     ar: 'آراء',
@@ -65,8 +65,8 @@ export const translations = {
     en: 'Join Community',
   },
   hero_secondary_button: {
-    ar: 'شاهد الأمثلة',
-    en: 'See Examples',
+    ar: 'جربها الآن',
+    en: 'Try It Now',
   },
 
   // Features Section
@@ -107,14 +107,52 @@ export const translations = {
     en: 'Built for fast and powerful performance for your applications, from small to large scale.',
   },
 
+  // Playground Section
+  playground_title: {
+    ar: 'ملعب إقرأ التفاعلي',
+    en: 'Iqra Interactive Playground',
+  },
+  playground_subtitle: {
+    ar: 'جرب قوة لغة إقرأ مباشرة في متصفحك. اكتب الكود، اضغط على تنفيذ، وشاهد النتائج فوراً.',
+    en: 'Experience the power of Iqra right in your browser. Write code, hit execute, and see the results instantly.',
+  },
+  playground_execute_button: {
+    ar: 'تنفيذ',
+    en: 'Execute',
+  },
+  playground_clear_button: {
+    ar: 'مسح',
+    en: 'Clear',
+  },
+  playground_output_header: {
+    ar: 'المخرجات',
+    en: 'Output',
+  },
+  playground_executing: {
+    ar: 'جاري التنفيذ...',
+    en: 'Executing...',
+  },
+  playground_no_output: {
+    ar: 'اكتمل التنفيذ بنجاح بدون أي مخرجات.',
+    en: 'Execution completed successfully with no output.',
+  },
+  playground_error_header: {
+    ar: 'خطأ في التنفيذ',
+    en: 'Execution Error',
+  },
+  playground_error_on_line: {
+    ar: 'خطأ في السطر {lineNumber}:',
+    en: 'Error on line {lineNumber}:',
+  },
+
   // Code Example Section
   code_example_title: {
-    ar: 'مثال على الكود',
-    en: 'Code Example',
+    ar: 'مثال عملي للكود',
+    en: 'Practical Code Example',
   },
   code_example_subtitle: {
-    ar: 'شاهد بنفسك مدى بساطة ووضوح كتابة الأكواد بلغة إقرأ. هذا مثال بسيط لحساب مساحة المستطيل.',
-    en: 'See for yourself how simple and clear it is to write code in Iqra. Here is a simple example for calculating a rectangle\'s area.',
+    ar: 'شاهد كيف تبدو لغة إقرأ في مثال واقعي. انسخ الكود وجربه في الملعب التفاعلي!',
+    en: 'See how Iqra looks in a real-world example. Copy the code and try it in the playground!',
   },
   code_example_copy: {
     ar: 'نسخ',
@@ -124,7 +162,7 @@ export const translations = {
     ar: 'تم النسخ!',
     en: 'Copied!',
   },
-
+  
   // Testimonials Section
   testimonials_main_title: {
     ar: 'ماذا يقول المطورون؟',

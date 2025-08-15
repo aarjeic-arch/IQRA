@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
           <a href="#community" className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full transition-transform duration-300 transform hover:scale-105">
             {t('hero_cta_button')}
           </a>
-           <a href="#examples" className="bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600 text-slate-200 font-bold py-3 px-8 rounded-full transition-colors duration-300">
+           <a href="#playground" className="bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600 text-slate-200 font-bold py-3 px-8 rounded-full transition-colors duration-300">
             {t('hero_secondary_button')}
           </a>
         </div>

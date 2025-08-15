@@ -48,14 +48,69 @@
         transform: translateY(0);
       }
       
-      /* Enhanced Syntax Highlighting Styles */
-      .token-comment { color: #637795; }
-      .token-keyword { color: #f92672; }
+      /* Syntax Highlighting Styles */
+      .token-comment { color: #637795; font-style: italic; }
+      .token-keyword { color: #f92672; font-weight: 500; }
       .token-string { color: #a6e22e; }
       .token-number { color: #ae81ff; }
       .token-function { color: #66d9ef; }
       .token-variable { color: #fd971f; }
+      .token-boolean { color: #ae81ff; }
+      .token-operator { color: #f92672; }
+      .token-punctuation { color: #f8f8f2; }
 
+      /* Live Editor Styles */
+      .live-editor-container:focus-within {
+        box-shadow: 0 0 0 2px #2dd4bf; /* teal-400 */
+        transition: box-shadow 0.2s ease-in-out;
+      }
+      .live-editor-wrapper {
+        position: relative;
+        min-height: 400px;
+      }
+      .live-editor-pre, .live-editor-textarea {
+        margin: 0;
+        padding: 1rem;
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        min-height: 400px;
+        height: 100%;
+        overflow-y: auto;
+      }
+      .live-editor-textarea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        color: transparent;
+        background: transparent;
+        caret-color: #f1f5f9; /* slate-100 */
+        border: none;
+        resize: none;
+        outline: none;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Custom Scrollbar Styles */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b; /* slate-800 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569; /* slate-600 */
+        border-radius: 5px;
+        border: 2px solid #1e293b; /* slate-800 */
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b; /* slate-500 */
+      }
+      
     </style>
   <script type="importmap">
 {

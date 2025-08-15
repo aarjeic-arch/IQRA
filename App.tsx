@@ -3,7 +3,7 @@ import { LocalizationProvider } from './context/LocalizationContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
-import CodeExample from './components/CodeExample';
+import Playground from './components/Playground';
 import Testimonials from './components/Testimonials';
 import Community from './components/Community';
 import Footer from './components/Footer';
@@ -32,8 +32,8 @@ const App: React.FC = () => {
           <AnimatedSection id="features">
             <Features />
           </AnimatedSection>
-          <AnimatedSection id="examples">
-            <CodeExample />
+          <AnimatedSection id="playground">
+            <Playground />
           </AnimatedSection>
           <AnimatedSection id="testimonials">
             <Testimonials />

@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
   const navLinks: { href: string, key: TranslationKey }[] = [
     { href: '#features', key: 'nav_features' },
-    { href: '#examples', key: 'nav_examples' },
+    { href: '#playground', key: 'nav_playground' },
     { href: '#testimonials', key: 'nav_testimonials' },
     { href: '#community', key: 'nav_community' },
   ];
